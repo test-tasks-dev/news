@@ -54,6 +54,7 @@ const News = () => {
 
   const btnRemove = (index) => (
     <Button
+      className='news-list__button news-list__button_remove'
       variant='contained'
       color='secondary'
       onClick={() => {
