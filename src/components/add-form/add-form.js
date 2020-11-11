@@ -14,7 +14,7 @@ const AddForm = ({ hideModal }) => {
     dispatch(setNews({
       title,
       text,
-      date: `${new Date().getDate()}.${new Date().getMonth()}.${new Date().getFullYear()}`,
+      date: `${new Date().getDate()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`,
       approved: false
     }));
 
