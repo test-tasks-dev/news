@@ -1,3 +1,3 @@
-# Стартовый репозиторий с webpack. Версия для React-проектов
+# Тестовое задание
 
-#### [Демонстрация](https://encrypticus.github.io/news)
+#### [Демонстрация](https://test-tasks-dev.github.io/news/)
