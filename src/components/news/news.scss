@@ -1,0 +1,30 @@
+@import '../../sass/utils';
+
+.news-list {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 -10px;
+  padding: 0;
+  list-style: none;
+  flex-wrap: wrap;
+  @include for-tablet-landscape-down {
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    padding: 10px;
+    margin: 10px;
+    width: 30%;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    @include for-tablet-landscape-down {
+      width: 100%;
+    }
+  }
+}
+
+.search {
+  min-width: 30%;
+  padding: 10px;
+  font-size: 18px;
+}
