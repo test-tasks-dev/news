@@ -20,6 +20,7 @@
     width: 30%;
     border-radius: 10px;
     border: 1px solid #eee;
+    transition: height .5s;
     @include for-tablet-landscape-down {
       width: 100%;
     }
@@ -36,4 +37,26 @@
   min-width: 30%;
   padding: 10px;
   font-size: 18px;
+}
+
+.item-enter {
+  opacity: 0;
+  transform: translateY(-100%) scale(.1);
+}
+
+.item-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: .5s;
+}
+
+.item-exit {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.item-exit-active {
+  opacity: 0;
+  transform: translateY(-100%) scale(.1);
+  transition: .5s;
 }

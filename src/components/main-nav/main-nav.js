@@ -6,13 +6,14 @@ import { Button } from '@material-ui/core/';
 import Modal from '../modal';
 import AuthForm from '../auth-form';
 import AddForm from '../add-form'
+import { Bounce, Fade } from '../../lib/animations';
 import { setUser } from '../../redux/actions/user';
 import './main-nav.scss';
 
 const MainNav = () => {
   const [showAuthForm, setShowAuthForm] = useState(false);
   const [showAddForm, setShowAddFrom] = useState(false);
-  const { signed, name } = useSelector(state => state.authReducer);
+  const { signed } = useSelector(state => state.authReducer);
   const dispatch = useDispatch();
 
   const signOut = () => {
@@ -36,38 +37,31 @@ const MainNav = () => {
   );
 
   const btnIn = (
-    <Button
-      variant='contained'
-      color='primary'
-      className='main-nav__button'
-      onClick={() => setShowAuthForm(true)}
-    >
-      Вход
-    </Button>
+    <Fade inProp={!signed}>
+      <Button
+        variant='contained'
+        color='primary'
+        className='main-nav__button'
+        onClick={() => {
+          setShowAuthForm(true);
+        }}
+      >
+        Вход
+      </Button>
+    </Fade>
   );
 
   const btnOut = (
-    <Button
-      variant='contained'
-      color='primary'
-      className='main-nav__button'
-      onClick={signOut}
-    >
-      Выход
-    </Button>
-  );
-
-  const btnAdd = (
-    <li className='main-nav__item'>
+    <Fade inProp={signed}>
       <Button
-        style={{ backgroundColor: 'green', color: 'white' }}
         variant='contained'
+        color='primary'
         className='main-nav__button'
-        onClick={() => setShowAddFrom(true)}
+        onClick={signOut}
       >
-        Добавить новость
+        Выход
       </Button>
-    </li>
+    </Fade>
   );
 
   return (
@@ -77,12 +71,26 @@ const MainNav = () => {
           <NavLink to='/' className='main-nav__link' activeClassName='main-nav__link_active'>Главная</NavLink>
         </li>
         <li className='main-nav__item'>
-          <NavLink exact to='/news' className='main-nav__link' activeClassName='main-nav__link_active'>Новости</NavLink>
+          <NavLink exact to='/news' className='main-nav__link'
+                   activeClassName='main-nav__link_active'>Новости</NavLink>
         </li>
         <li className='main-nav__item main-nav__item_left_auto'>
-          {signed ? btnOut : btnIn}
+          {btnIn}
+          {btnOut}
         </li>
-        {name === 'Иван' && btnAdd}
+
+        <Bounce inProp={signed}>
+          <li className='main-nav__item'>
+            <Button
+              style={{ backgroundColor: 'green', color: 'white' }}
+              variant='contained'
+              className='main-nav__button'
+              onClick={() => setShowAddFrom(true)}
+            >
+              Добавить новость
+            </Button>
+          </li>
+        </Bounce>
       </ul>
       {showAuthForm && authForm}
       {showAddForm && addForm}

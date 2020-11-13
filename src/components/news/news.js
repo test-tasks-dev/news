@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
-import { remove, approve } from '../../redux/actions/news';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
+import { remove, approve } from '../../redux/actions/news';
+import { Fade } from '../../lib/animations';
 import './news.scss';
 
 const News = () => {
@@ -40,52 +42,58 @@ const News = () => {
     setNewsList(news);
   };
 
-  const btnApprove = (index) => (
-    <Button
-      variant='contained'
-      color='primary'
-      onClick={() => {
-        dispatch(approve(index));
-      }}
-    >
-      Одобрить
-    </Button>
+  const btnApprove = (index, approved) => (
+    <Fade inProp={!approved && name === 'Админ'}>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={() => {
+          dispatch(approve(index));
+        }}
+      >
+        Одобрить
+      </Button>
+    </Fade>
   );
 
   const btnRemove = (index) => (
-    <Button
-      className='news-list__button news-list__button_remove'
-      variant='contained'
-      color='secondary'
-      onClick={() => {
-        dispatch(remove(index))
-      }}
-    >
-      Удалить
-    </Button>
+    <Fade inProp={name === 'Админ'}>
+      <Button
+        className='news-list__button news-list__button_remove'
+        variant='contained'
+        color='secondary'
+        onClick={() => {
+          dispatch(remove(index))
+        }}
+      >
+        Удалить
+      </Button>
+    </Fade>
   );
 
   const renderList = () => {
     return (
-      <ul className='news-list'>
+      <TransitionGroup component='ul' className='news-list'>
         {
           newsList.map(({ title, text, date, approved }, idx) => (
-            <li className='news-list__item' key={idx}>
-              <h3 className='news-list__title'>{title}</h3>
-              <p className='news-list__text'>{text}</p>
-              <p className='news-list__date'>{date}</p>
-              {
-                name === 'Админ' && (
-                  <p className='news-list__actions'>
-                    {btnRemove(idx)}
-                    {!approved && btnApprove(idx)}
-                  </p>
-                )
-              }
-            </li>
+            <CSSTransition
+              key={`${title} ${text}`}
+              timeout={500}
+              classNames='zoom'
+            >
+              <li className='news-list__item'>
+                <h3 className='news-list__title'>{title}</h3>
+                <p className='news-list__text'>{text}</p>
+                <p className='news-list__date'>{date}</p>
+                <p className='news-list__actions'>
+                  {btnRemove(idx)}
+                  {btnApprove(idx, approved)}
+                </p>
+              </li>
+            </CSSTransition>
           ))
         }
-      </ul>
+      </TransitionGroup>
     );
   };
 
